@@ -1,5 +1,5 @@
 ---
-layout: homepage
+layout: homepage.v3
 ---
 
 # MikroORM Documentation Snapshots

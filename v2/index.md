@@ -1,5 +1,5 @@
 ---
-layout: homepage
+layout: homepage.v2
 ---
 
 [![NPM version](https://img.shields.io/npm/v/mikro-orm.svg)](https://www.npmjs.com/package/mikro-orm)
