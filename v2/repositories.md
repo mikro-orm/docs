@@ -1,4 +1,5 @@
 ---
+layout: default.v2
 ---
 
 # Using EntityRepository instead of EntityManager

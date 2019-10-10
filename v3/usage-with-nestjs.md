@@ -1,4 +1,5 @@
 ---
+layout: default.v3
 ---
 
 # Using MikroORM with NestJS framework

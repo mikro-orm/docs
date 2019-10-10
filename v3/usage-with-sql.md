@@ -1,4 +1,5 @@
 ---
+layout: default.v3
 ---
 
 # Usage with MySQL, MariaDB, PostgreSQL or SQLite

@@ -1,4 +1,5 @@
 ---
+layout: default.v2
 ---
 
 # Cascading persist, merge and remove

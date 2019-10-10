@@ -1,4 +1,5 @@
 ---
+layout: default.v2
 ---
 
 # Working with EntityManager
