@@ -99,7 +99,7 @@ for (const author of authors) {
 }
 ```
 
-### Conditions Object ()
+### Conditions Object
 
 Querying entities via conditions object (`where` in `em.find(Entity, where: FilterQuery<T>)`) 
 supports many different ways:
@@ -133,6 +133,24 @@ const user1 = await orm.em.findOne(User, 1);
 As you can see in the fifth example, one can also use operators like `$and`, `$or`, `$gte`, 
 `$gt`, `$lte`, `$lt`, `$in`, `$nin`, `$eq`, `$ne`. More about that can be found in 
 [Query Conditions](query-conditions.md) section. 
+
+### Searching by referenced entity fields
+
+You can also search by referenced entity properties. Simply pass nested where condition like 
+this and all requested relationships will be automatically joined. Currently it will only join 
+them so you can search and sort by those. To populate entities, do not forget to pass the populate 
+parameter as well. 
+
+```typescript
+// find author of a book that has tag specified by name
+const author = await orm.em.findOne(Author, { books: { tags: { name: 'Tag name' } } });
+console.log(author.books.isInitialized()); // false, as it only works for query and sort
+
+const author = await orm.em.findOne(Author, { books: { tags: { name: 'Tag name' } } }, ['books.tags']);
+console.log(author.books.isInitialized()); // true, because it was populated
+console.log(author.books[0].tags.isInitialized()); // true, because it was populated
+console.log(author.books[0].tags[0].isInitialized()); // true, because it was populated
+```
 
 ### Fetching Partial Entities
 
@@ -188,7 +206,7 @@ try {
 
 ## Type of Fetched Entities
 
-Both `EntityManager.find` and `EntityManager.findOne()` methods have generic return types.
+Both `em.find` and `em.findOne()` methods have generic return types.
 All of following examples are equal and will let typescript correctly infer the entity type:
 
 ```typescript
@@ -212,12 +230,12 @@ or [`tests/EntityManager.mysql.test.ts`](https://github.com/mikro-orm/mikro-orm/
 
 ## EntityManager API
 
-#### `getRepository<T extends IEntity>(entityName: string | EntityClass<T>): EntityRepository<T>`
+#### `getRepository<T extends AnyEntity>(entityName: string | EntityClass<T>): EntityRepository<T>`
 
 Returns `EntityRepository` for given entity, respects `customRepository` option of `@Entity`
 and `entityRepository` option of `MikroORM.init()`.
 
-#### `find<T extends IEntity>(entityName: string | EntityClass<T>, where: FilterQuery<T>, options?: FindOptions): Promise<T[]>`
+#### `find<T extends AnyEntity>(entityName: string | EntityClass<T>, where: FilterQuery<T>, options?: FindOptions): Promise<T[]>`
 
 Returns array of entities found for given condition. You can specify `FindOptions` to request
 population of referenced entities or control the pagination:
@@ -233,27 +251,27 @@ export interface FindOptions {
 
 ---
 
-#### `find<T extends IEntity>(entityName: string | EntityClass<T>, where: FilterQuery<T>, populate?: string[], orderBy?: { [k: string]: QueryOrder }, limit?: number, offset?: number): Promise<T[]>`
+#### `find<T extends AnyEntity>(entityName: string | EntityClass<T>, where: FilterQuery<T>, populate?: string[], orderBy?: { [k: string]: QueryOrder }, limit?: number, offset?: number): Promise<T[]>`
 
 Same as previous `find` method, just with dedicated parameters for `populate`, `orderBy`, `limit`
 and `offset`.
 
 ---
 
-#### `findAndCount<T extends IEntity>(entityName: string | EntityClass<T>, where: FilterQuery<T>, populate?: string[], orderBy?: { [k: string]: QueryOrder }, limit?: number, offset?: number): Promise<[T[], number]>`
+#### `findAndCount<T extends AnyEntity>(entityName: string | EntityClass<T>, where: FilterQuery<T>, populate?: string[], orderBy?: { [k: string]: QueryOrder }, limit?: number, offset?: number): Promise<[T[], number]>`
 
 Combination of `find` and `count` methods. 
 
 ---
 
-#### `findOne<T extends IEntity>(entityName: string | EntityClass<T>, where: FilterQuery<T> | IPrimaryKey, populate?: string[]): Promise<T | null>`
+#### `findOne<T extends AnyEntity>(entityName: string | EntityClass<T>, where: FilterQuery<T> | IPrimaryKey, populate?: string[]): Promise<T | null>`
 
 Finds an entity by given `where` condition. You can use primary key as `where` value, then
 if the entity is already managed, no database call will be made. 
 
 ---
 
-#### `findOneOrFail<T extends IEntity>(entityName: string | EntityClass<T>, where: FilterQuery<T> | IPrimaryKey, populate?: string[]): Promise<T>`
+#### `findOneOrFail<T extends AnyEntity>(entityName: string | EntityClass<T>, where: FilterQuery<T> | IPrimaryKey, populate?: string[]): Promise<T>`
 
 Just like `findOne`, but throws when entity not found, so it always resolves to given entity. 
 You can customize the error either globally via `findOneOrFailHandler` option, or locally via 
@@ -261,21 +279,21 @@ You can customize the error either globally via `findOneOrFailHandler` option, o
 
 ---
 
-#### `merge<T extends IEntity>(entityName: string | EntityClass<T>, data: EntityData<T>): T`
+#### `merge<T extends AnyEntity>(entityName: string | EntityClass<T>, data: EntityData<T>): T`
 
 Adds given entity to current Identity Map. After merging, entity becomes managed. 
 This is useful when you want to work with cached entities. 
 
 ---
 
-#### `map<T extends IEntity>(entityName: string | EntityClass<T>, data: EntityData<T>): T`
+#### `map<T extends AnyEntity>(entityName: string | EntityClass<T>, data: EntityData<T>): T`
 
 Maps raw DB result to entity, adding it to current Identity Map. Equivalent to 
-`IDatabaseDriver.mapResult()` followed by `EntityManager.merge()`.
+`IDatabaseDriver.mapResult()` followed by `em.merge()`.
 
 ---
 
-#### `getReference<T extends IEntity>(entityName: string | EntityClass<T>, id: string): T`
+#### `getReference<T extends AnyEntity>(entityName: string | EntityClass<T>, id: string): T`
 
 Gets a reference to the entity identified by the given type and identifier without actually 
 loading it, if the entity is not yet loaded.
@@ -288,7 +306,7 @@ Gets count of entities matching the `where` condition.
 
 ---
 
-#### `persist(entity: IEntity | IEntity[], flush?: boolean): void | Promise<void>`
+#### `persist(entity: AnyEntity | AnyEntity[], flush?: boolean): void | Promise<void>`
 
 Tells the EntityManager to make an instance managed and persistent. The entity will be 
 entered into the database at or before transaction commit or as a result of the flush 
@@ -297,13 +315,13 @@ configuration option.
 
 ---
 
-#### `persistAndFlush(entity: IEntity | IEntity[]): Promise<void>`
+#### `persistAndFlush(entity: AnyEntity | AnyEntity[]): Promise<void>`
 
 Shortcut for `persist` & `flush`.
 
 ---
 
-#### `persistLater(entity: IEntity | IEntity[]): void`
+#### `persistLater(entity: AnyEntity | AnyEntity[]): void`
 
 Shortcut for just `persist`, without flushing. 
 
@@ -315,7 +333,7 @@ Flushes all changes to objects that have been queued up to now to the database.
 
 ---
 
-#### `remove(entityName: string | EntityClass<T>, where: IEntity | FilterQuery<T> | IPrimaryKey, flush?: boolean): Promise<number>`
+#### `remove(entityName: string | EntityClass<T>, where: AnyEntity | FilterQuery<T> | IPrimaryKey, flush?: boolean): Promise<number>`
 
 When provided entity instance as `where` value, then it calls `removeEntity(entity, flush)`, 
 otherwise it fires delete query with given `where` condition. 
@@ -324,7 +342,7 @@ This method fires `beforeDelete` and `afterDelete` hooks only if you provide ent
 
 ---
 
-#### `removeEntity(entity: IEntity, flush?: boolean): Promise<number>`
+#### `removeEntity(entity: AnyEntity, flush?: boolean): Promise<number>`
 
 Removes an entity instance. A removed entity will be removed from the database at or before 
 transaction commit or as a result of the flush operation. You can control immediate flushing 
@@ -334,13 +352,13 @@ This method fires `beforeDelete` and `afterDelete` hooks.
 
 ---
 
-#### `removeAndFlush(entity: IEntity): Promise<void>`
+#### `removeAndFlush(entity: AnyEntity): Promise<void>`
 
 Shortcut for `removeEntity` & `flush`.
 
 ---
 
-#### `removeLater(entity: IEntity): void`
+#### `removeLater(entity: AnyEntity): void`
 
 Shortcut for `removeEntity` without flushing. 
 

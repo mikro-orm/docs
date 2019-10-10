@@ -8,7 +8,7 @@ To generate entities from existing database schema, you can use `EntityGenerator
 
 You can use it via CLI: 
 
-```shell script
+```sh
 npx mikro-orm generate-entities --dump  # Dumps all generated entities
 npx mikro-orm generate-entities --save --path=./my-entities  # Saves entities into given directory
 ```
@@ -37,7 +37,7 @@ import { MikroORM } from 'mikro-orm';
 
 Then run this script via `ts-node` (or compile it to plain JS and use `node`):
 
-```bash
+```sh
 $ ts-node generate-entities
 ```
 

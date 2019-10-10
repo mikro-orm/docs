@@ -6,7 +6,7 @@ layout: default.v3
 
 First install the module via `yarn` or `npm` and do not forget to install the database driver as well:
 
-```
+```sh
 $ yarn add mikro-orm mongodb # for mongo
 $ yarn add mikro-orm mysql2  # for mysql/mariadb
 $ yarn add mikro-orm mariadb # for mysql/mariadb
@@ -16,7 +16,7 @@ $ yarn add mikro-orm sqlite3 # for sqlite
 
 or
 
-```
+```sh
 $ npm i -s mikro-orm mongodb # for mongo
 $ npm i -s mikro-orm mysql2  # for mysql/mariadb
 $ npm i -s mikro-orm mariadb # for mysql/mariadb
@@ -87,7 +87,7 @@ MikroORM ships with a number of command line tools that are very helpful during 
 like Schema Generator and Entity Generator. You can call this command from the NPM binary 
 directory or use `npx`:
 
-```shell script
+```sh
 $ node node_modules/.bin/mikro-orm
 $ npx mikro-orm
 
@@ -95,9 +95,10 @@ $ npx mikro-orm
 $ mikro-orm
 ```
 
-For CLI to be able to access your database, you will need to create `cli-config.js` file that 
+For CLI to be able to access your database, you will need to create `mikro-orm.config.js` file that 
 exports your ORM configuration. TypeScript is also supported, just enable `useTsNode` flag in your
-`package.json` file. There you can also set up array of possible paths to `cli-config` file:
+`package.json` file. There you can also set up array of possible paths to `mikro-orm.config` file,
+as well as use different file name:
 
 **`./package.json`**
 
@@ -108,16 +109,16 @@ exports your ORM configuration. TypeScript is also supported, just enable `useTs
   "mikro-orm": {
     "useTsNode": true,
     "configPaths": [
-      "./src/cli-config.ts",
-      "./dist/cli-config.js"
+      "./src/mikro-orm.config.ts",
+      "./dist/mikro-orm.config.js"
     ]
   }
 }
 ```
 
-**`./src/cli-config.ts`**
+**`./src/mikro-orm.config.ts`**
 
-```
+```typescript
 // usually you will reexport existing configuration from somewhere else
 import { CONFIG } from './config';
 export = CONFIG.orm;
@@ -129,7 +130,7 @@ export = CONFIG.orm;
 
 Now you should be able to start using the CLI. All available commands are listed in the CLI help:
 
-```shell script
+```sh
 Usage: mikro-orm <command> [options]
 
 Commands:
