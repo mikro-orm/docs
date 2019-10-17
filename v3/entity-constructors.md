@@ -13,10 +13,10 @@ but `publisher` will be optional:
 
 ```typescript
 @Entity()
-export class Book {
+export class Book implements IdEntity<Book> {
 
   @PrimaryKey()
-  _id: ObjectId;
+  id: number;
 
   @Property()
   title: string;
@@ -36,8 +36,6 @@ export class Book {
   }
 
 }
-
-export interface Book extends AnyEntity { }
 ```
 
 [&larr; Back to table of contents](index.md#table-of-contents)
