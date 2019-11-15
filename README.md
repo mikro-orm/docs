@@ -8,7 +8,7 @@
 [![Coverage Status](https://img.shields.io/coveralls/mikro-orm/mikro-orm.svg)](https://coveralls.io/r/mikro-orm/mikro-orm?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/27999651d3adc47cfa40/maintainability)](https://codeclimate.com/github/mikro-orm/mikro-orm/maintainability)
 
-- v2.7.8: [https://mikro-orm.github.io/docs/v2/](v2/index.md)
+- v2.7.9: [https://mikro-orm.github.io/docs/v2/](v2/index.md)
 - v3.0.0: [https://mikro-orm.github.io/docs/v3/](v3/index.md)
 
 This repository serves as a place for old major versions documentation.
