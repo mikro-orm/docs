@@ -29,13 +29,13 @@ will think that desired entities are always loaded:
 
 ```typescript
 @Entity()
-export class Book {
+export class Book implements IdEntity<Book> {
 
   @PrimaryKey()
-  id: number;
+  id!: number;
 
   @ManyToOne()
-  author: Author;
+  author!: Author;
 
   constructor(author: Author) {
     this.author = author;
@@ -52,7 +52,7 @@ console.log(book.author.name); // undefined as `Author` is not loaded yet
 You can overcome this issue by using the `Reference<T>` wrapper. It simply wraps the entity, 
 defining `load(): Promise<T>` method that will first lazy load the association if not already
 available. You can also use `unwrap(): T` method to access the underlying entity without loading
-it. 
+it.
 
 You can also use `get<K extends keyof T>(prop: K): Promise<T[K]>` helper, that will call `load()` 
 for you, making sure the entity is initialized first, then returning the value of given property 
@@ -62,13 +62,13 @@ directly.
 import { Entity, IdentifiedReference, ManyToOne, PrimaryKey, Reference } from 'mikro-orm';
 
 @Entity()
-export class Book {
+export class Book implements IdEntity<Book> {
 
   @PrimaryKey()
-  id: number;
+  id!: number;
 
   @ManyToOne()
-  author: IdentifiedReference<Author>;
+  author!: IdentifiedReference<Author>;
 
   constructor(author: Author) {
     this.author = Reference.create(author);
@@ -120,13 +120,13 @@ You can also have non-standard primary key like `uuid`:
 
 ```typescript
 @Entity()
-export class Book {
+export class Book implements IdEntity<Book> {
 
   @PrimaryKey()
-  id: number;
+  id!: number;
 
   @ManyToOne()
-  author: IdentifiedReference<Author, 'uuid'>;
+  author!: IdentifiedReference<Author, 'uuid'>;
 
 }
 
@@ -139,13 +139,16 @@ and `ObjectId` PK values:
 
 ```typescript
 @Entity()
-export class Book {
+export class Book implements MongoEntity<Book> {
 
   @PrimaryKey()
-  _id: ObjectId;
+  _id!: ObjectId;
+
+  @SerializedPrimaryKey()
+  id!: string;
 
   @ManyToOne()
-  author: IdentifiedReference<Author, 'id' | '_id'>;
+  author!: IdentifiedReference<Author, 'id' | '_id'>;
 
 }
 

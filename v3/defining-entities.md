@@ -16,7 +16,7 @@ to [use entity constructors](entity-constructors.md), just do not forget to spec
 export class Book implements IdEntity<Book> {
 
   @PrimaryKey()
-  id: number;
+  id!: number;
 
   @Property()
   createdAt = new Date();
@@ -25,15 +25,15 @@ export class Book implements IdEntity<Book> {
   updatedAt = new Date();
 
   @Property()
-  title: string;
+  title!: string;
 
   @ManyToOne() // when you provide correct type hint, ORM will read it for you
-  author: Author;
+  author!: Author;
 
   @ManyToOne(() => Publisher) // or you can specify the entity as class reference or string name
   publisher?: Publisher;
 
-  @ManyToMany(() => BookTag, tag => tag.books, { owner: true })
+  @ManyToMany() // owning side can be simple as this!
   tags = new Collection<BookTag>(this);
 
   constructor(title: string, author: Author) {
@@ -65,10 +65,10 @@ time defined for mongo:
 export class Author implements MongoEntity<Author> {
 
   @PrimaryKey()
-  _id: ObjectId;
+  _id!: ObjectId;
 
   @SerializedPrimaryKey()
-  id: string;
+  id!: string;
 
   @Property()
   createdAt = new Date();
@@ -77,10 +77,10 @@ export class Author implements MongoEntity<Author> {
   updatedAt = new Date();
 
   @Property()
-  name: string;
+  name!: string;
 
   @Property()
-  email: string;
+  email!: string;
 
   @Property()
   age?: number;
@@ -97,11 +97,14 @@ export class Author implements MongoEntity<Author> {
   @OneToMany(() => Book, book => book.author)
   books = new Collection<Book>(this);
 
+  @ManyToMany()
+  friends = new Collection<Author>(this);
+
   @ManyToOne()
-  favouriteBook: Book;
+  favouriteBook?: Book;
 
   @Property({ version: true })
-  version: number;
+  version!: number;
 
   constructor(name: string, email: string) {
     this.name = name;
@@ -122,6 +125,40 @@ as nullable property (mainly for SQL schema generator).
 
 > This auto-detection works only when you omit the `type` attribute.
 
+### Enums
+
+To define enum property, use `@Enum()` decorator. Enums can be either numeric or string valued. 
+
+For schema generator to work properly in case of string enums, you need to define the enum 
+is same file as where it is used, so its values can be automatically discovered. If you want 
+to define the enum in another file, you should reexport it also in place where you use it. 
+
+> You can also set enum items manually via `items: string[]` attribute.  
+
+```typescript
+@Entity()
+export class User implements IdEntity<User> {
+
+  @Enum()
+  role!: UserRole; // string enum
+
+  @Enum()
+  status!: UserStatus; // numeric enum
+
+}
+
+export enum UserRole {
+  ADMIN = 'admin',
+  MODERATOR = 'moderator',
+  USER = 'user',
+}
+
+export const enum UserStatus {
+  DISABLED,
+  ACTIVE,
+}
+``` 
+
 ## Virtual Properties
 
 You can define your properties as virtual, either as a method, or via JavaScript `get/set`.
@@ -135,13 +172,13 @@ are both hidden from the serialized response, replaced with virtual properties `
 
 ```typescript
 @Entity()
-export class User {
+export class User implements IdEntity<User> {
 
   @Property({ hidden: true })
-  firstName: string;
+  firstName!: string;
 
   @Property({ hidden: true })
-  lastName: string;
+  lastName!: string;
 
   @Property({ name: 'fullName' })
   getFullName() {
@@ -214,13 +251,13 @@ export abstract class BaseEntity implements UuidEntity<BaseEntity> {
 export class Book implements IdEntity<Book> {
 
   @PrimaryKey()
-  id: number; // string is also supported
+  id!: number; // string is also supported
 
   @Property()
-  title: string;
+  title!: string;
 
   @ManyToOne()
-  author: Author;
+  author!: Author;
 
 }
 ```
@@ -237,10 +274,10 @@ export class Book implements UuidEntity<Book> {
   uuid = v4();
 
   @Property()
-  title: string;
+  title!: string;
 
   @ManyToOne()
-  author: Author;
+  author!: Author;
 
 }
 ```
@@ -252,16 +289,16 @@ export class Book implements UuidEntity<Book> {
 export class Book implements MongoEntity<Book> {
 
   @PrimaryKey()
-  _id: ObjectId;
+  _id!: ObjectId;
 
   @SerializedPrimaryKey() 
-  id: string; // string variant of PK, will be handled automatically
+  id!: string; // string variant of PK, will be handled automatically
 
   @Property()
-  title: string;
+  title!: string;
 
   @ManyToOne()
-  author: Author;
+  author!: Author;
 
 }
 ```
@@ -273,13 +310,13 @@ export class Book implements MongoEntity<Book> {
 export class Book {
 
   @PrimaryKey()
-  id: number;
+  id!: number;
 
   @Property()
-  title: string;
+  title!: string;
 
   @ManyToOne()
-  author: Author;
+  author!: Author;
 
 }
 

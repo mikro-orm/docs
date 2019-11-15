@@ -48,6 +48,7 @@ compatible with Vanilla JavaScript.
   - [Debugging](debugging.md)
   - [Schema Generator](schema-generator.md)
   - [Entity Generator](entity-generator.md)
+  - [Migrations](migrations.md)
   - [Read Replica Connections](read-connections.md)
 - Usage with Different Drivers
   - [Usage with SQL Drivers](usage-with-sql.md)
@@ -57,9 +58,11 @@ compatible with Vanilla JavaScript.
   - [Usage with Vanilla JS](usage-with-js.md)
   - [Creating Custom Driver](custom-driver.md)
   - [Using Multiple Schemas](multiple-schemas.md)
+  - [Upgrading from v2 to v3](upgrading-v2-to-v3.md)
 - Example Integrations
   - [Express + MongoDB + TypeScript](https://github.com/mikro-orm/mikro-orm-examples/tree/master/express-ts)
   - [Nest + MySQL + TypeScript](https://github.com/mikro-orm/mikro-orm-examples/tree/master/nest)
+  - [RealWorld example app (Nest + MySQL)](https://github.com/mikro-orm/nestjs-realworld-example-app)
   - [Express + MongoDB + JavaScript](https://github.com/mikro-orm/mikro-orm-examples/tree/master/express-js)
 
 ## Articles
