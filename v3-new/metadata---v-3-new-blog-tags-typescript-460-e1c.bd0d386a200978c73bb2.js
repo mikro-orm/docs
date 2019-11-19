@@ -1,1 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[55],{222:function(p){p.exports=JSON.parse('{"allTagsPath":"/v3-new/blog/tags","slug":"typescript","name":"typescript","count":2,"permalink":"/v3-new/blog/tags/typescript"}')}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[55],{222:function(p){p.exports=JSON.parse('{"allTagsPath":"/docs/v3-new/blog/tags","slug":"typescript","name":"typescript","count":2,"permalink":"/docs/v3-new/blog/tags/typescript"}')}}]);

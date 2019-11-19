@@ -1,1 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[52],{223:function(n){n.exports=JSON.parse('{"allTagsPath":"/v3-new/blog/tags","slug":"node","name":"node","count":2,"permalink":"/v3-new/blog/tags/node"}')}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[52],{223:function(n){n.exports=JSON.parse('{"allTagsPath":"/docs/v3-new/blog/tags","slug":"node","name":"node","count":2,"permalink":"/docs/v3-new/blog/tags/node"}')}}]);
