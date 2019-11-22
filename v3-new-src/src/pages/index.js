@@ -27,7 +27,7 @@ const features = [
   },
   {
     title: <>DRY Entities</>,
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
+    imageUrl: 'img/entity-definition.svg',
     description: (
       <>
         Uses source code analysis so you do not have to repeat yourself when defining entities. Simply define correct
@@ -38,6 +38,34 @@ const features = [
   {
     title: <>Supports both SQL and NoSQL</>,
     imageUrl: 'img/undraw_docusaurus_react.svg',
+    description: (
+      <>
+        Supports MongoDB, MySQL, MariaDB, PostgreSQL and SQLite databases, and more can be supported via custom
+        drivers right now.
+      </>
+    ),
+  },
+  {
+    title: <>ChangeSet based persistence</>,
+    imageUrl: 'img/undraw_docusaurus_react.svg',
+    description: (
+      <>
+        ...
+      </>
+    ),
+  },
+  {
+    title: <>Powerful Querying API</>,
+    imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    description: (
+    <>
+        Search for entities with ease <code>em.find(User, { address: { street: /^Downing/ } }, ['address', 'cars.brand'])</code>
+      </>
+    ),
+  },
+  {
+    title: <>Supports both SQL and NoSQL</>,
+    imageUrl: 'img/undraw_docusaurus_tree.svg',
     description: (
       <>
         Supports MongoDB, MySQL, MariaDB, PostgreSQL and SQLite databases, and more can be supported via custom
